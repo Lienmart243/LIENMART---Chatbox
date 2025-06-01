@@ -3,13 +3,15 @@ import openai
 import os
 
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Biến môi trường để an toàn hơn
+
+# Bạn có thể hardcode key ở đây nếu chưa biết dùng biến môi trường:
+openai.api_key = "sk-..."  # Chỉ để test, KHÔNG nên để key thật khi deploy công khai
 
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
     message = data.get("message", "")
-
+    
     if not message:
         return jsonify({"error": "No message provided"}), 400
 
@@ -22,6 +24,10 @@ def chat():
         return jsonify({"reply": reply})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/", methods=["GET"])
+def index():
+    return "🟢 ChatGPT Flask server is running! POST to /chat"
 
 if __name__ == "__main__":
     app.run(debug=True)
