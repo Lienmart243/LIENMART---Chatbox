@@ -2,6 +2,8 @@ services:
   - type: web
     name: lienmart-chatbox
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
-    plan: free
+    buildCommand: ""
+    startCommand: gunicorn app:app
+    envVars:
+      - key: OPENAI_API_KEY
+        value: your_openai_api_key_here
