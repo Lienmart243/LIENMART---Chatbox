@@ -6,5 +6,5 @@ services:
     startCommand: "gunicorn app:app"
     envVars:
       - key: OPENAI_API_KEY
-        value: your_openai_api_key_here  # ⚠️ Chỉ dùng cho chạy local. Trên Render hãy cấu hình riêng.
+        value: your_real_openai_api_key_here  # Thay bằng KEY thật trong Render Dashboard
     plan: free
