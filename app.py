@@ -31,10 +31,12 @@ def chat():
         )
         reply = response.choices[0].message["content"]
         return jsonify({"reply": reply})
-    except Exception as e:
-        # Ghi log lỗi vào console để tiện debug
-        print("Lỗi khi gọi OpenAI:", e)
-        return jsonify({"error": "Có lỗi xảy ra từ hệ thống"}), 500
+    import traceback  # <-- thêm dòng này ở đầu file (nếu chưa có)
+
+except Exception as e:
+    print("Lỗi khi gọi OpenAI:", e)
+    traceback.print_exc()  # In toàn bộ stack trace vào logs để dễ debug
+    return jsonify({"error": "Có lỗi xảy ra từ hệ thống"}), 500
 
 # Route kiểm tra service còn chạy
 @app.route("/", methods=["GET"])
