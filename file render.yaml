@@ -3,6 +3,6 @@ services:
     name: lienmart-chatbox
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    startCommand: "gunicorn main:app"
     plan: free
 
