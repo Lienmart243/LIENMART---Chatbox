@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import openai
 import os
+import traceback  # ✅ Đặt ở đầu file
 from dotenv import load_dotenv
 
 # Load biến môi trường từ .env
@@ -31,19 +32,18 @@ def chat():
         )
         reply = response.choices[0].message["content"]
         return jsonify({"reply": reply})
-    import traceback  # <-- thêm dòng này ở đầu file (nếu chưa có)
-
-except Exception as e:
-    print("Lỗi khi gọi OpenAI:", e)
-    traceback.print_exc()  # In toàn bộ stack trace vào logs để dễ debug
-    return jsonify({"error": "Có lỗi xảy ra từ hệ thống"}), 500
+    
+    except Exception as e:
+        print("Lỗi khi gọi OpenAI:", e)
+        traceback.print_exc()  # In lỗi chi tiết ra log
+        return jsonify({"error": "Có lỗi xảy ra từ hệ thống"}), 500
 
 # Route kiểm tra service còn chạy
 @app.route("/", methods=["GET"])
 def index():
     return "LIENMART Chatbox is running."
 
-# Khởi chạy app (sẽ bị bỏ qua khi dùng gunicorn)
+# Khởi chạy app khi chạy trực tiếp (dùng cho phát triển)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
